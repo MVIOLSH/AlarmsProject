@@ -12,7 +12,11 @@ namespace Alarms.Db.Entities.Configuration
     {
         public void Configure(EntityTypeBuilder<TagData> builder)
         {
-           
+            builder.Property(x => x.TagName).HasColumnType("varchar(50)");
+           // builder.Property(x => x.TagDataId).UseIdentityColumn();
+
+
         }
     }
+
 }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Alarms.Db.Entities
 {
-    public class TagData
+    public class AlarmDto
     {
-        public Guid TagDataId { get; set; } = new Guid();
         public string TagName { get; set; }
-        public string Description { get; set; }
-        public EventLog EventLog { get; set; }
+        public string TagDescription { get; set; }
+        public DateTime EventDateTime { get; set; }
+        public bool State { get; set; }
     }
 }

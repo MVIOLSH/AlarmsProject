@@ -16,14 +16,14 @@ namespace Alarms.Db.Entities
         {
             if(!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Data Source = (localdb)\MSSQLlocalDB; Catalog = AlarmProject");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=AlamrsProject;Trusted_Connection=True;");
             }
 
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        { 
-
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
         }
     }
     

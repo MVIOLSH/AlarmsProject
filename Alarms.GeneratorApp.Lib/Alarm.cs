@@ -4,19 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
-namespace Alarms.Db.Entities
+namespace Alarms.GeneratorApp.Lib
 {
-    public class EventLog
+    public class Alarm
     {
-        public Guid EventLogId { get; set; } = new Guid();
+        public string TagName { get; set; }
+        public string TagDescription { get; set; }
         public DateTime EventDateTime { get; set; }
         public bool State { get; set; }
-        public TagData TagData { get; set; }
-        public Guid TagDataId { get; set; }
-
-
     }
 }
-
