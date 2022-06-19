@@ -4,6 +4,7 @@ using Alarms.Db.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Alarms.Db.Migrations
 {
     [DbContext(typeof(AlarmsDbContext))]
-    partial class AlarmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220618142220_init3")]
+    partial class init3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,15 +41,12 @@ namespace Alarms.Db.Migrations
 
                     b.HasKey("EventLogId");
 
-                    b.HasIndex("TagDataId");
-
                     b.ToTable("EventLogs");
                 });
 
             modelBuilder.Entity("Alarms.Db.Entities.TagData", b =>
                 {
                     b.Property<Guid>("TagDataId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -61,20 +60,20 @@ namespace Alarms.Db.Migrations
                     b.ToTable("TagDatas");
                 });
 
-            modelBuilder.Entity("Alarms.Db.Entities.EventLog", b =>
+            modelBuilder.Entity("Alarms.Db.Entities.TagData", b =>
                 {
-                    b.HasOne("Alarms.Db.Entities.TagData", "TagData")
-                        .WithMany("EventLog")
-                        .HasForeignKey("TagDataId")
+                    b.HasOne("Alarms.Db.Entities.EventLog", "EventLog")
+                        .WithOne("TagData")
+                        .HasForeignKey("Alarms.Db.Entities.TagData", "TagDataId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TagData");
+                    b.Navigation("EventLog");
                 });
 
-            modelBuilder.Entity("Alarms.Db.Entities.TagData", b =>
+            modelBuilder.Entity("Alarms.Db.Entities.EventLog", b =>
                 {
-                    b.Navigation("EventLog");
+                    b.Navigation("TagData");
                 });
 #pragma warning restore 612, 618
         }

@@ -46,11 +46,12 @@ var confirm = Console.ReadLine();
 
 if (confirm == "Y" || confirm =="y")
 {
+    #region Gathering tag data
     Console.WriteLine("Now the list of tags...");
     string confirmation = "N";
     List<string> tags = new List<string>();
 
-    while(confirmation != "Y")
+    while(confirmation != "Y" || confirmation != "y")
     {
         Console.WriteLine("Write a tag");
 
@@ -60,17 +61,40 @@ if (confirm == "Y" || confirm =="y")
         Console.WriteLine(" Is that all the tags you wanted? Y = yes N = No");
         confirmation = Console.ReadLine();  
     }
+    #endregion 
 
     Console.WriteLine( "List of Tags is showed below: ");
+
     foreach(string tag in tags)
     {
         Console.WriteLine(tag);
     }
+
     Console.WriteLine("Please wait....");
+
+    #region Creating of list of tags to add a new ones to DB
     var dbContext = new AlarmsDbContext();
     var tagsFromDB = dbContext.TagDatas.Select( x=> x.TagName ).ToList();
+
+    //Loop that checks if the DB already contain tag proposed by the user. If yes, it removes it form the list to prevent duplication.
+    foreach(string tag in tags)
+    {
+        if (tagsFromDB.Any( x => x.Equals(tag))) 
+        {
+            tags.Remove(tag);
+        }    
+    }
+
+    var seed = (startDate.ToString() + endDate.ToString()).GetHashCode() + tags.GetHashCode();
+
+    TagGenerator TagGenerate = new TagGenerator();
+
+    var ListOftagsToSendToDbatabase = TagGenerate.TagGenerate(tags, seed);
+
+
+    #endregion
+
     List<string> joinedTags = tags.Union(tagsFromDB).ToList();
-    
     var Generator = new Generator();
 
     var FinalLinst =  Generator.Generate(startDate, endDate, joinedTags);
@@ -86,10 +110,16 @@ if (confirm == "Y" || confirm =="y")
     {
         var DbSave = new DbSavingMockData();
         var JsonList = JsonSerializer.Serialize(FinalLinst);
-        DbSave.SaveDataToDb(JsonList);
+        var JsonTagDataList = JsonSerializer.Serialize(joinedTags);
+        DbSave.SaveDataToDb(JsonList, JsonTagDataList);
     }
 
 
 
+}
+else
+{
+    Console.WriteLine("In that case we have nothing more to do here :) Goodbye");
+    Console.ReadLine();
 }
 

@@ -106,6 +106,12 @@ namespace Alarms.GeneratorApp.Lib
             return alarms;
         }
 
+        public void GenerateTags(List<string> UserInputTags)
+        {
+
+
+        }
+
         public void ToJSON()
         {
             JSON =  JsonSerializer.Serialize(GeneratedAlarmsList);

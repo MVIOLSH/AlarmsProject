@@ -11,23 +11,42 @@ namespace Alarms.Logic
 {
     public class DbSavingMockData
     {
-        public Task SaveDataToDb(string Json)
+        public Task SaveDataToDb(string Json, string tagDataList)
         {
             var dbContext = new AlarmsDbContext();
-            var deSerialized = JsonSerializer.Deserialize<List<AlarmDto>>(Json);
+            var deSerializedEvents = JsonSerializer.Deserialize<List<AlarmDto>>(Json);
+            var deSerializedTags = JsonSerializer.Deserialize<List<TagData>>(tagDataList);
             List<TagData> ListOfTags = new List<TagData>();
             List<EventLog> EventsLogs = new List<EventLog>();
+            List<TagData> TagsFromDB = dbContext.TagDatas.ToList();
 
-            if (deSerialized != null)
+            if(deSerializedTags != null)
             {
-                foreach (var entity in deSerialized)
+                foreach(var tagData in deSerializedTags)
                 {
-                    TagData tagData = new TagData()
+                    TagData tagDataCreate = new TagData()
                     {
-                       
-                        TagName = entity.TagName,
-                        Description = entity.TagDescription,
+
+                        TagName = tagData.TagName,
+                        Description = tagData.Description,
                     };
+                    if (!TagsFromDB.Any().Equals(tagData.TagName))
+                    {
+                        ListOfTags.Add(tagData);
+                    }
+
+                }
+            }
+
+
+            if (deSerializedEvents != null)
+            {
+               
+                foreach (var entity in deSerializedEvents)
+                {
+                    
+                    
+
                     EventLog log = new EventLog()
                     {
                         
@@ -35,10 +54,11 @@ namespace Alarms.Logic
                         State = entity.State,
 
                     };
-                    //ListOfTags.Add(tagData);
-                    //EventsLogs.Add(log);
-                    dbContext.TagDatas.Add(tagData);
-                    dbContext.EventLogs.Add(log);
+
+                    
+                    EventsLogs.Add(log);
+                    
+                    
                 }
             }
 

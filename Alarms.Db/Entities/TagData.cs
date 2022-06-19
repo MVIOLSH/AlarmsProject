@@ -11,6 +11,7 @@ namespace Alarms.Db.Entities
         public Guid TagDataId { get; set; } = new Guid();
         public string TagName { get; set; }
         public string Description { get; set; }
-        public EventLog EventLog { get; set; }
+        public List<EventLog> EventLog { get; set; } = new List<EventLog>();
+
     }
 }

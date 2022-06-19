@@ -12,7 +12,7 @@ namespace Alarms.Db.Entities.Configuration
     {
         public void Configure(EntityTypeBuilder<EventLog> builder)
         {
-            builder.HasOne( c=>c.TagData).WithOne(e =>e.EventLog).HasForeignKey<TagData>( c=>c.TagDataId);
+           // builder.HasOne( c=>c.TagData).WithOne(e =>e.EventLog).HasForeignKey<TagData>( c=>c.TagDataId);
         }
     }
 }
