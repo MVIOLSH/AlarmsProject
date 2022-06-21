@@ -51,7 +51,7 @@ if (confirm == "Y" || confirm =="y")
     string confirmation = "N";
     List<string> tags = new List<string>();
 
-    while(confirmation != "Y" || confirmation != "y")
+    while(confirmation != "Y")
     {
         Console.WriteLine("Write a tag");
 
@@ -74,35 +74,59 @@ if (confirm == "Y" || confirm =="y")
 
     #region Creating of list of tags to add a new ones to DB
     var dbContext = new AlarmsDbContext();
-    var tagsFromDB = dbContext.TagDatas.Select( x=> x.TagName ).ToList();
+   // var tagsFromDB = dbContext.TagDatas.Select( x=> x.TagName ).ToList();
 
     //Loop that checks if the DB already contain tag proposed by the user. If yes, it removes it form the list to prevent duplication.
-    foreach(string tag in tags)
-    {
-        if (tagsFromDB.Any( x => x.Equals(tag))) 
-        {
-            tags.Remove(tag);
-        }    
-    }
+    //foreach(string tag in tags)
+    //{
+    //    if (tagsFromDB.Any( x => x.Equals(tag))) 
+    //    {
+    //        tags.Remove(tag);
+    //    }    
+    //}
 
     var seed = (startDate.ToString() + endDate.ToString()).GetHashCode() + tags.GetHashCode();
 
-    TagGenerator TagGenerate = new TagGenerator();
+    //TagGenerator TagGenerate = new TagGenerator();
 
-    var ListOftagsToSendToDbatabase = TagGenerate.TagGenerate(tags, seed);
+    //var ListOftagsToSendToDbatabase = TagGenerate.TagGenerate(tags, seed);
 
 
     #endregion
 
-    List<string> joinedTags = tags.Union(tagsFromDB).ToList();
-    var Generator = new Generator();
+    //List<string> joinedTags = tags.Union(tagsFromDB).ToList();
 
-    var FinalLinst =  Generator.Generate(startDate, endDate, joinedTags);
+    var TagGenerator = new TagGenerator();
+
+    var genratedTags = TagGenerator.TagGenerate(tags, seed);
+
+    List<AlarmDto> alarms = new List<AlarmDto>();
+
+    foreach(var Tag in genratedTags)
+    {
+        AlarmDto alarm = new AlarmDto()
+        {
+            TagName = Tag.TagName,
+            Description = Tag.Description,
+            
+        };
+        alarms.Add(alarm);
+    }
+    
+    DbTagSaving dbTagSaving = new DbTagSaving(); 
+
+    
+    var ListToSerialize =dbTagSaving.SaveTagsToDatabase(alarms);
+    var jsonGeneratedTags = JsonSerializer.Serialize(ListToSerialize);
+
+    Generator genrator = new Generator();
+
+    var FinalLinst = genrator.Generate(startDate, endDate, jsonGeneratedTags);
     Console.WriteLine( "Done");
 
     foreach(var alarm in FinalLinst)
     {
-        Console.WriteLine($"{alarm.TagName}, {alarm.TagDescription}, {alarm.EventDateTime}, {alarm.State}");
+        Console.WriteLine($"{alarm.TagName}, {alarm.Description}, {alarm.EventDateTime}, {alarm.State}");
     }
     Console.WriteLine("Do you want to save the data do Database? Y for Yes N for No");
     var saveConfirmation = Console.ReadLine();
@@ -110,8 +134,8 @@ if (confirm == "Y" || confirm =="y")
     {
         var DbSave = new DbSavingMockData();
         var JsonList = JsonSerializer.Serialize(FinalLinst);
-        var JsonTagDataList = JsonSerializer.Serialize(joinedTags);
-        DbSave.SaveDataToDb(JsonList, JsonTagDataList);
+        //var JsonTagDataList = JsonSerializer.Serialize(joinedTags);
+        DbSave.SaveDataToDb(JsonList);
     }
 
 

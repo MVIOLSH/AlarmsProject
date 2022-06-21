@@ -1,0 +1,54 @@
+﻿@model Alarms.Web.Models.Home.DataViewer;
+@{
+    ViewData["Title"] = "Data Viewer";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Custom data search</h1>
+    <br/>
+    <br />
+
+    <form asp-action="DataViewer">
+    Filter  by date from: <input type="datetime-local" id="startDate" name="startDate" asp-for="startDate" /> 
+    
+      To date: <input type="datetime-local" id="endDate" name="endDate" asp-for="endDate" /> 
+     <br />
+     <br />
+     <input type="text" id="filter" name="filter" asp-for="tagName"/>
+     <br />
+     <br />
+     <button class="btn btn-primary col-3" type="submit">Filter</button>
+    </form>
+
+    @if (Model.dbListOfData == null)
+    {
+        <p>Loading.....</p>
+    }
+    else
+    {
+         <table class="table">
+        <thead>
+            <tr>
+                <th>Tag</th>
+                <th>Date</th>             
+                <th>State</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+
+        @foreach (var tagg in Model.dbListOfData)
+        {
+           <tr>                    
+                    <td>@tagg.TagName</td>                    
+                    <td>@tagg.EventDateTime</td>
+                    <td>@tagg.State</td>
+                  
+           </tr>             
+        }
+        </table>
+    }
+    <p>I am already hate it :))</p>
+  
+
+</div>

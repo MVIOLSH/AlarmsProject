@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Alarms.GeneratorApp.Lib
+namespace Alarms.Logic
 {
-    public class Alarm
+    public class AlarmDto
     {
         public string TagName { get; set; }
         public string Description { get; set; }
@@ -15,3 +15,4 @@ namespace Alarms.GeneratorApp.Lib
         public Guid TagDataId { get; set; }
     }
 }
+

@@ -20,15 +20,19 @@ namespace Alarms.GeneratorApp.Lib
 
             foreach ( string tag in tagNames)
             {
-                var createAlam = new Alarm()
+                Alarm createAlam = new Alarm()
                 {
+                    
                     TagName = tag,
-                    TagDescription = tagNames[random.Next(tagNames.Count)]
+                    Description = ListOfWords[random.Next(ListOfWords.Length)]
                     
                 };
+                alarms.Add(createAlam);
             }
+         
 
-             return alarms;       
+             
+            return alarms;       
             
         }
         

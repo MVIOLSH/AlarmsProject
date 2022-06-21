@@ -1,0 +1,40 @@
+﻿@model Alarms.Web.Models.Home.AllData;
+@{
+    ViewData["Title"] = "All Data";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Page that display all the data form Database</h1>
+    <p></p>
+    @if (Model.dbListOfData == null)
+    {
+        <p>Loading.....</p>
+    }
+    else
+    {
+         <table class="table">
+        <thead>
+            <tr>
+                <th>Tag</th>
+                <th>Date</th>             
+                <th>State</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+
+        @foreach (var tagg in Model.dbListOfData)
+        {
+           <tr>                    
+                    <td>@tagg.TagName</td>                    
+                    <td>@tagg.EventDateTime</td>
+                    <td>@tagg.State</td>
+                  
+           </tr>             
+        }
+        </table>
+    }
+    <p>I am already hate it :))</p>
+  
+
+</div>
