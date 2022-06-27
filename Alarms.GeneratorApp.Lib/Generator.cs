@@ -1,41 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace Alarms.GeneratorApp.Lib
 {
     public class Generator
     {
-        public List<Alarm> GeneratedAlarmsList { get; set; }   
+        public List<Alarm> GeneratedAlarmsList { get; set; }
         public bool State { get; set; } = true;
         public int Seed { get; set; }
         public string JSON { get; set; }
 
 
 
-        public List<Alarm> Generate( DateTime start, DateTime end, string tags)
+        public List<Alarm> Generate(DateTime start, DateTime end, string tags)
         {
-           
+
             List<Alarm> alarms = new List<Alarm>();
             int hashed = tags.GetHashCode();
-            Random random = new Random(hashed);   
+            Random random = new Random(hashed);
             List<Alarm> tagsFromJson = JsonSerializer.Deserialize<List<Alarm>>(tags);
 
-            while(start.ToOADate() <= end.ToOADate())
+            while (start.ToOADate() <= end.ToOADate())
             {
                 start = start.AddSeconds(random.Next(60, 600));
 
-                if(start.ToOADate() > end.ToOADate())
+                if (start.ToOADate() > end.ToOADate())
                 {
                     break;
 
                 }
-                
+
                 var currentTag = tagsFromJson[random.Next(tagsFromJson.Count)];
-            
+
 
 
                 foreach (Alarm alarm in alarms)
@@ -50,17 +45,17 @@ namespace Alarms.GeneratorApp.Lib
                     }
                 }
                 Alarm genneratedAlarm = new Alarm()
-                    {
-                        TagDataId = currentTag.TagDataId,
-                        TagName = currentTag.TagName,
-                        State = State,
-                        EventDateTime = start,
-                        Description = currentTag.Description, 
-                    };
+                {
+                    TagDataId = currentTag.TagDataId,
+                    TagName = currentTag.TagName,
+                    State = State,
+                    EventDateTime = start,
+                    Description = currentTag.Description,
+                };
 
-                    alarms.Add(genneratedAlarm);
+                alarms.Add(genneratedAlarm);
 
-                
+
             }
 
             GeneratedAlarmsList = alarms;
@@ -75,11 +70,11 @@ namespace Alarms.GeneratorApp.Lib
 
         public void ToJSON()
         {
-            JSON =  JsonSerializer.Serialize(GeneratedAlarmsList);
+            JSON = JsonSerializer.Serialize(GeneratedAlarmsList);
         }
-        
+
 
     }
-    
+
 
 }

@@ -1,22 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Alarms.Db.Entities
 {
     public class AlarmsDbContext : DbContext
     {
+        public AlarmsDbContext(DbContextOptions<AlarmsDbContext> options) : base(options)
+        {
+
+        }
         public DbSet<TagData> TagDatas { get; set; }
         public DbSet<EventLog> EventLogs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if(!optionsBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=AlamrsProject;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=AlamrsProject;Trusted_Connection=True;");
             }
 
         }
@@ -26,5 +25,5 @@ namespace Alarms.Db.Entities
             modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
         }
     }
-    
+
 }

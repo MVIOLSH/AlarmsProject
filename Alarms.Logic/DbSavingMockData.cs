@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Alarms.Db;
-using Alarms.Db.Entities;
+﻿using Alarms.Db.Entities;
 using System.Text.Json;
 
 namespace Alarms.Logic
 {
     public class DbSavingMockData
     {
+        private AlarmsDbContext dbContext;
+        public DbSavingMockData(AlarmsDbContext _dbContext)
+        {
+            dbContext = _dbContext;
+
+        }
+
         public Task SaveDataToDb(string Json)
         {
-            var dbContext = new AlarmsDbContext();
+
             var deSerializedEvents = JsonSerializer.Deserialize<List<AlarmDto>>(Json);
             //var deSerializedTags = JsonSerializer.Deserialize<List<TagData>>(tagDataList);
             //List<TagData> ListOfTags = new List<TagData>();
@@ -31,16 +32,16 @@ namespace Alarms.Logic
 
 
                 };
-                
 
-               dbContext.Add(log);
+
+                dbContext.Add(log);
 
 
             }
             dbContext.SaveChanges();
-            return Task.CompletedTask;  
-        }              
-           
+            return Task.CompletedTask;
+        }
+
     }
 }
 

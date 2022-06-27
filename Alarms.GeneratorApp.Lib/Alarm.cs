@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Alarms.GeneratorApp.Lib
+﻿namespace Alarms.GeneratorApp.Lib
 {
     public class Alarm
     {

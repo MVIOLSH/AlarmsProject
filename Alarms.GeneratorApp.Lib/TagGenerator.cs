@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Alarms.GeneratorApp.Lib
+﻿namespace Alarms.GeneratorApp.Lib
 {
     public class TagGenerator
     {
@@ -18,23 +12,23 @@ namespace Alarms.GeneratorApp.Lib
                                         "massa. Suspendisse eleifend.","augue ut lacus."
                                     };
 
-            foreach ( string tag in tagNames)
+            foreach (string tag in tagNames)
             {
                 Alarm createAlam = new Alarm()
                 {
-                    
+
                     TagName = tag,
                     Description = ListOfWords[random.Next(ListOfWords.Length)]
-                    
+
                 };
                 alarms.Add(createAlam);
             }
-         
 
-             
-            return alarms;       
-            
+
+
+            return alarms;
+
         }
-        
+
     }
 }
