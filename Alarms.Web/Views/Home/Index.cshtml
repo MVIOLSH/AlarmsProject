@@ -1,8 +1,196 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model Alarms.Web.Models.Alarms.ChartRep
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+}
+<div class="row">
+
+    <div class="card col m-2">
+        <div class="chart-container card-body p-2">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+
+    <div class="card col m-2">
+        <div class="chart-container card-body p-2">
+            <canvas id="myChart2"></canvas>
+        </div>
+    </div>
+
+    <div class="card col m-2">
+        <div class="chart-container card-body p-2">
+            <canvas id="myChart3"></canvas>
+        </div>
+    </div>
+
 </div>
+<div class="row">
+
+    <div class="card col m-2">
+        <div class="chart-container card-body p-2">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+
+    <div class="card col m-2">
+        <div class="chart-container card-body p-2">
+            <canvas id="myChart2"></canvas>
+        </div>
+    </div>
+
+    <div class="card col m-2">
+        <div class="chart-container card-body p-2">
+            <canvas id="myChart3"></canvas>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts
+    {
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        $(document).ready(function() {
+            $.ajax({
+                url: "ChartData", success: function(result) {
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    const myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: result.labels,
+                            datasets: [{
+
+                                data: result.number,
+
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+            })
+        })
+
+
+
+
+
+
+        $(document).ready(function() {
+            $.ajax({
+                url: "ChartData", success: function(result) {
+                    const ctx = document.getElementById('myChart2').getContext('2d');
+                    const myChart2 = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: result.labels,
+                            datasets: [{
+
+                                data: result.number,
+
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+            })
+        })
+
+        $(document).ready(function() {
+            $.ajax({
+                url: "ChartData", success: function(result) {
+                    const ctx = document.getElementById('myChart3').getContext('2d');
+                    const myChart2 = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: result.labels,
+                            datasets: [{
+
+                                data: result.number,
+
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+            })
+        })
+
+
+    </script>
+
+}

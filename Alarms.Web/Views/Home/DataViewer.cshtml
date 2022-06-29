@@ -12,7 +12,7 @@
     <br/>
     <br />
 
-   <div>
+  
    <form asp-action="DataViewer" method="get">
    
      Filter  by date from: <input type="datetime-local" id="startDate" name="startDate" asp-for="startDate" />
@@ -29,71 +29,15 @@
      <button class="btn btn-primary col-1" type="submit">Filter</button>
     </form>
  
-    @if (Model.dbListOfData == null)
-    {
-        <p>Loading.....</p>
-    }
-    else
-    {                 
-        <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>#</th> @*I am not going to sort by this number at any foreseeable future.*@
-                 <th class=" = text-center">
-                     @Html.SortHeader("Tag Name", "DataViewer", "Home" , "TagName", Context.Request.Query, htmlAttributes ) 
-                     @Html.SortIdentifier("TagName", Context.Request.Query)
-                     
-                 </th>
-                <th>
-                     @Html.SortHeader("Description", "DataViewer", "Home" , "TagDescription", Context.Request.Query, htmlAttributes )
-                     @Html.SortIdentifier("TagDescription", Context.Request.Query)
-                    
-                </th>
-                <th>
-                     @Html.SortHeader("Date and Time", "DataViewer", "Home" , "EventDateTime", Context.Request.Query, htmlAttributes )               
-                     @Html.SortIdentifier("EventDateTime", Context.Request.Query)
-                </th>
-                <th>
-                     @Html.SortHeader("State", "DataViewer", "Home" , "State", Context.Request.Query, htmlAttributes )                
-                     @Html.SortIdentifier("State", Context.Request.Query)
-                     
-                </th>
-                
-            </tr>
-        </thead>
-        <tbody>
+    <div class="col-12">
+        <partial name="_DataTableView">
 
-        @foreach (var tagg in Model.dbListOfData)
-                {
-                    Model.index = Model.index+1; 
-                    <tr>     
-                    <td>@Model.index</td>         
-                    <td>@tagg.TagName</td> 
-                    <td>@tagg.TagDescription</td>
-                    <td>@tagg.EventDateTime</td>
-                    <td>@tagg.State</td>
-                  
-           </tr>             
-        }
-        </table>
-    }          
-    
-    @Html.Pagination2(Url, "DataViewer", "Home", 
-    new Alarms.Logic.Models.PageInfo{
-        PageNumber = Model.currPage,
-        PagerSize = 8,
-        PageSize = Model.pSize,
-        TotalItemCount =  Model.totalPages*Model.pSize},
-        Context.Request.Query,
-        htmlAttributes
-    )
-
-      
-     <label >@Model.currPage</label> Out Of: <label id="totalPages" name="totalPages">@Model.totalPages</label>
-                    
-   </div> 
+        
+      </div>
+   
 
 </div>
+
 
 
  

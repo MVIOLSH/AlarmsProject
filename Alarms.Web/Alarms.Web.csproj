@@ -7,12 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Chart.js" Version="3.7.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+    <PackageReference Include="jQuery" Version="3.6.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Alarms.Db\Alarms.Db.csproj" />
     <ProjectReference Include="..\Alarms.Logic\Alarms.Logic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Alarms\" />
+    <Folder Include="Views\Alarms\" />
   </ItemGroup>
 
 </Project>

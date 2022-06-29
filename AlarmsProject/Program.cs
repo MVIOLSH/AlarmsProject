@@ -14,29 +14,31 @@ namespace Alarms.GeneratorApp
 
         static void Main(string[] args)
         {
-            ToRun run = new ToRun();
-            run.RunIt();
-
-        }
-
-
-
-        public static IHostBuilder CreateHostBuilder(string[] args)
-        {
-            return Host.CreateDefaultBuilder(args)
+            var host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddDbContext<AlarmsDbContext>(options =>
-                    options.UseSqlServer(hostContext.Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly(typeof(AlarmsDbContext).Assembly.FullName)).EnableSensitiveDataLogging()
-                );
-                    services.AddScoped<DbTagSaving>();
-                    services.AddScoped<DbSavingMockData>();
+                    services
+                    .AddDbContext<AlarmsDbContext>(options =>
+                        options
+                        .UseSqlServer(
+                            hostContext.Configuration.GetConnectionString("DefaultConnection"),
+                            b => b.MigrationsAssembly(typeof(AlarmsDbContext).Assembly.FullName)
+                            )
+                        .EnableSensitiveDataLogging()
+                    )
+                    .AddScoped<DbTagSaving>()
+                    .AddScoped<DbSavingMockData>()
+                    .AddScoped<ToRun>();
+                })
+                .Build();
 
+            var scope = host.Services.CreateScope();
+            var provider = scope.ServiceProvider;
 
-
-                });
+            var toRun = provider.GetRequiredService<ToRun>();
+            toRun.RunIt();
         }
+
 
     }
 }
