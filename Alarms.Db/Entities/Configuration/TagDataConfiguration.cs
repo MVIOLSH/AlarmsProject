@@ -9,9 +9,6 @@ namespace Alarms.Db.Entities.Configuration
         {
             builder.Property(x => x.TagName).HasColumnType("varchar(50)");
             builder.HasMany(w => w.EventLog).WithOne(c => c.TagData).HasForeignKey(k => k.TagDataId);
-
-
-
         }
     }
 

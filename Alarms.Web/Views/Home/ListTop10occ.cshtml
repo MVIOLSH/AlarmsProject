@@ -1,0 +1,19 @@
+﻿@model Alarms.Web.Models.Alarms.ChartRep
+
+@{
+    string controller = ViewBag.Controller;
+    var htmlAttributes = new Dictionary<string, object>() { { "data-actionreplacedirecttargets", "index-table" } };
+    ViewData["Title"] = "Top 10 Occ";
+}
+
+<div class="text-center">
+  
+         <ol>
+             @foreach(var item in Model.Labels)
+             {
+             <li>@item</li>
+             }
+         </ol>
+ </div>
+  
+

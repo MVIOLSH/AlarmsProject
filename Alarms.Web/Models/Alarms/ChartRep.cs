@@ -2,7 +2,7 @@
 {
     public class ChartRep
     {
-        public List<string> Labels { get; set; }
+        public List<string?> Labels { get; set; }
         public List<decimal> Number { get; set; }
     }
 }

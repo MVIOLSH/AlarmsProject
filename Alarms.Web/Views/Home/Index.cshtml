@@ -1,15 +1,23 @@
-﻿@model Alarms.Web.Models.Alarms.ChartRep
+﻿@model Alarms.Web.Models.Home.DashboardModel
 
 
 @{
-    ViewData["Title"] = "Dashboard";
+    string controller = ViewBag.Controller;
+    var htmlAttributes = new Dictionary<string, object>() { { "data-actionreplacedirecttargets", "index-table" } };
+    ViewData["Title"] = "Index";
 
 }
 <div class="row">
 
     <div class="card col m-2">
         <div class="chart-container card-body p-2">
-            <canvas id="myChart"></canvas>
+          <partial name="ListTop10occ" for="List1" />
+        </div>
+    </div>
+
+    <div class="card col m-2">
+        <div class="chart-container card-body p-2">
+          <partial name="ListTop10occ" for="List2" />
         </div>
     </div>
 
@@ -55,10 +63,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-
+        //Chart Top 10 alarms by occurrences
         $(document).ready(function() {
             $.ajax({
-                url: "ChartData", success: function(result) {
+                url: "", success: function(result) {
                     const ctx = document.getElementById('myChart').getContext('2d');
                     const myChart = new Chart(ctx, {
                         type: 'bar',
@@ -98,18 +106,13 @@
                 }
             })
         })
-
-
-
-
-
-
+        //Top 10 alarm by active time
         $(document).ready(function() {
             $.ajax({
-                url: "ChartData", success: function(result) {
+                url: "ChartDataTop10ActiveTime", success: function(result) {
                     const ctx = document.getElementById('myChart2').getContext('2d');
                     const myChart2 = new Chart(ctx, {
-                        type: 'line',
+                        type: 'bar',
                         data: {
                             labels: result.labels,
                             datasets: [{
@@ -136,6 +139,7 @@
                             }]
                         },
                         options: {
+                            indexAxis:'y',
                             scales: {
                                 y: {
                                     beginAtZero: true
@@ -146,10 +150,10 @@
                 }
             })
         })
-
+        //Top alarms by occurrences pie chart
         $(document).ready(function() {
             $.ajax({
-                url: "ChartData", success: function(result) {
+                url: "ChartDataTop10Occ", success: function(result) {
                     const ctx = document.getElementById('myChart3').getContext('2d');
                     const myChart2 = new Chart(ctx, {
                         type: 'doughnut',

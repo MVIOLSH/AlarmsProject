@@ -10,6 +10,7 @@ namespace Alarms.Db.Entities
         }
         public DbSet<TagData> TagDatas { get; set; }
         public DbSet<EventLog> EventLogs { get; set; }
+        public DbSet<FullEvents> FullEvents { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

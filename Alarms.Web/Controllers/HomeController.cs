@@ -27,27 +27,71 @@ namespace Alarms.Web.Controllers
 
         public IActionResult Index()
         {
+            var model = new DashboardModel
+            {
+                List1 = ListTop10occ(),
+                List2 = ListTop10occ()
+            };
 
-
-
-
-            return View();
+            return View(model);
         }
 
-        public IActionResult ChartData()
+        public ChartRep ListTop10occ()
+        {
+            var dbResult = _handler.FullEventsConversion().GroupBy(x => x.TagData.TagName).OrderByDescending(x => x.Count()).Take(10);
+
+            List<string> labels = new();
+            List<decimal> values = new();
+
+            ChartRep chartRep = new();
+            foreach (var item in dbResult)
+            {
+                labels.Add(item.Key + " -----> " + item.Count());
+                values.Add((decimal)1);
+            }
+            chartRep.Labels = labels;
+            chartRep.Number = values;
+            return chartRep;
+        }
+        public IActionResult ChartDataTop10ActiveTime()
         {
             AllData data = new AllData();
 
             data.dbListOfData = _handler.SimpleDataFetch();
-            var groupedList = data.dbListOfData.OrderBy(x => x.TagName).GroupBy(x => x.TagName.ToLower());
+            var groupedList = data.dbListOfData.OrderBy(x => x.TagName).GroupBy(x => x.TagName);
+            var orderedAndTrimedList = groupedList.OrderByDescending(x => (decimal)(x.Count())).ToList();
             ChartRep chartRep = new();
 
 
-            chartRep.Labels = groupedList.Select(x => x.Key).ToList();
-            chartRep.Number = groupedList.Select(x => (decimal)(x.Count())).ToList();
+            chartRep.Labels = orderedAndTrimedList.Select(x => x.Key).Take(10).ToList();
+            chartRep.Number = orderedAndTrimedList.Select(x => (decimal)(x.Count())).Take(10).ToList();
 
 
             return Json(chartRep);
+        }
+
+        public IActionResult Converter()
+        {
+            var dbResult = _handler.FullEventsConversion();
+
+            Converter converter = new();
+            List<FullEventRep> events = new();
+
+            foreach (var item in dbResult)
+            {
+                FullEventRep ev = new()
+                {
+                    EventStart = item.EventStart,
+                    EventEnd = item.EventEnd,
+                    DurationInSec = item.DurationSeconds,
+                    TagName = item.TagData.TagName
+                };
+                events.Add(ev);
+            }
+
+            converter.FullEvetsList = events.OrderBy(x => x.EventStart).ToList();
+
+            return View(converter);
         }
 
         public IActionResult Privacy()
@@ -111,6 +155,32 @@ namespace Alarms.Web.Controllers
 
             return PartialView("DataViewer/_DataViewerTable", partialViewer);
         }
+
+        //public IActionResult Top10Occ()
+        //{
+        //    var dbResult = _handler.FullEventsConversion();
+
+        //    Converter converter = new();
+        //    List<FullEventRep> events = new();
+
+        //    foreach (var item in dbResult)
+        //    {
+        //        FullEventRep ev = new()
+        //        {
+        //            EventStart = item.EventStart,
+        //            EventEnd = item.EventEnd,
+        //            DurationInSec = item.DurationSeconds,
+        //            TagName = item.TagData.TagName
+        //        };
+        //        events.Add(ev);
+        //    }
+
+        //    var groupped = events.GroupBy(x => x.TagName).ToList();
+
+        //    converter.FullEvetsList = groupped.Count;
+
+        //    return View(converter);
+        //}
     }
 }
 

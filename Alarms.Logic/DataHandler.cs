@@ -178,5 +178,48 @@ namespace Alarms.Logic
             return queryDto;
 
         }
+
+        public List<FullEvents> FullEventsConversion()
+        {
+            var result = new List<FullEvents>();
+
+
+            var groupedListFromDb = SimpleDataFetch().OrderBy(x => x.TagName).GroupBy(x => x.TagName).ToList();
+
+            foreach (var group in groupedListFromDb)
+            {
+                var i = 0;
+                var listOfTrue = group.Where(x => x.State == true).OrderBy(x => x.EventDateTime).ToList();
+                var listOfFalse = group.Where(x => x.State == false).OrderBy(x => x.EventDateTime).ToList();
+
+                var falseCount = listOfFalse.Count();
+
+                if (listOfTrue.Count > listOfFalse.Count)
+                {
+                    listOfTrue.RemoveAt(listOfTrue.Count - 1);
+                }
+
+
+                foreach (var item in listOfTrue)
+                {
+                    FullEvents ev = new FullEvents
+                    {
+                        FullEventsId = new Guid(),
+                        TagData = db.TagDatas.First(x => x.TagName == group.Key),
+                        EventStart = item.EventDateTime,
+                        EventEnd = listOfFalse[i].EventDateTime,
+                        DurationSeconds = Convert.ToInt32((listOfFalse[i].EventDateTime - item.EventDateTime).TotalSeconds)
+                    };
+                    i++;
+                    db.FullEvents.Add(ev);
+                }
+                db.SaveChanges();
+
+            }
+            result = db.FullEvents.Include(x => x.TagData).ToList();
+            return result;
+        }
+
+
     }
 }

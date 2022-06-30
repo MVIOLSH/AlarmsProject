@@ -1,0 +1,43 @@
+﻿@model Alarms.Web.Models.Home.Converter
+
+@{
+    ViewData["Title"] = "All Data";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Page that display all the data form Database</h1>
+    <p></p>
+    @if (Model.FullEvetsList == null)
+    {
+        <p>Loading.....</p>
+    }
+    else
+    {
+         <table class="table">
+        <thead>
+            <tr>
+                <th>Tag Name</th>
+                <th>Start</th>
+                <th>End</th>             
+                <th>Duration in seconds</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+
+        @foreach (var tagg in Model.FullEvetsList)
+        {
+           <tr>                    
+                    <td>@tagg.TagName</td>                    
+                    <td>@tagg.EventStart</td>
+                    <td>@tagg.EventEnd</td>
+                    <td>@tagg.DurationInSec</td>
+                  
+           </tr>             
+        }
+        </table>
+    }
+ 
+  
+
+</div>
